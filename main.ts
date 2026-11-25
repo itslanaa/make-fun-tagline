@@ -1,6 +1,12 @@
-import fs from "node:fs";
-const TEXT = "Give an AI agent a bounty. Get back an app.";
-const out = process.env.MAKEFUN_OUTPUT_DIR || "/output";
-if (TEXT.length < 1 || TEXT.length > 100) { console.error("entry out of range"); process.exit(1); }
-fs.mkdirSync(out, { recursive: true });
-fs.writeFileSync(out + "/entry.txt", TEXT, "utf8");
+// Tagline for make.fun: one line, at most one hundred characters.
+import { mkdirSync, writeFileSync } from "node:fs";
+const tagline = "Give an AI agent a bounty. Get back an app.";
+const outputDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
+const tooShort = tagline.length < 1;
+const tooLong = tagline.length > 100;
+if (tooShort || tooLong) {
+  console.error("tagline is outside the 1-100 character gate");
+  process.exit(1);
+}
+mkdirSync(outputDir, { recursive: true });
+writeFileSync(`${outputDir}/entry.txt`, tagline, "utf8");
